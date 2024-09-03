@@ -1,0 +1,17 @@
+{
+  "name": "multi-session",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "serve": "nodemon --exec electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "electron": "^32.0.1",
+    "nodemon": "^3.1.4"
+  }
+}
