@@ -3,16 +3,102 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bootstrap demo</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/bootstrap.css" />
+    <link rel="stylesheet" href="../css/bootstrap-icons.css" />
     <link rel="stylesheet" href="../css/main.css" />
   </head>
   <body>
     <div id="app">
-      <h1>{{ title }}</h1>
+      <div class="container d-flex align-items-center justify-content-center text-start pt-4 pb-4">
+        <div class="row gy-3 align-items-center justify-content-center py-4">
+          <!-- Header -->
+          <div class="col-12">
+            <div class="row align-items-center mb-5">
+              <div class="col-8">
+                <h1 class="text-inline-block my-0">
+                  <i class="bi bi-back text-success text-inline-block"></i>
+                  <span class="text-inline-block text-muted ms-3"> {{ title }}</span>
+                </h1>
+                <small class="text-inline-block text-muted ms-2">V{{ version }}</small>
+              </div>
+              <div class="col-4 text-end">
+                <button type="button" class="btn btn-primary btn-md py-2 px-4" @click="createSession"><i class="bi bi-browser-chrome"></i> Nova Sessão</button>
+              </div>
+            </div>
+          </div>
+          <!-- End header -->
+
+          <!-- Session form -->
+          <div class="col-12" v-show="showEditor">
+            <div class="row align-items-center mb-4 text-bg-light py-3 border rounded">
+              <div class="col-4">
+                <input class="form-control form-control-md py-3" type="text" placeholder="Nome da sessão" v-model="editSessionTitle" />
+              </div>
+
+              <div class="col-6">
+                <input class="form-control form-control-md py-3" type="text" placeholder="Link (opcional)" v-model="editionSessionHome" />
+              </div>
+
+              <div class="col-2">
+                <div class="d-grid gap-2">
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary py-3" @click="saveSession">Salvar</button>
+                    <button type="button" class="btn btn-outline-primary py-3" @click="saveCancel">Cancelar</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <input class="form-control form-control-md py-3 mt-3" type="text" placeholder="Notas (opcional)" v-model="editSessionNote" />
+              </div>
+
+              <div class="col-12" v-show="editionSessionError">
+                <div class="alert alert-danger mt-3 mb-0" role="alert">
+                  <i class="bi bi-exclamation-triangle text-inline-block"></i>
+                  <span class="text-inline-block ms-2">{{editionSessionError}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End session form -->
+
+          <!-- Sessions list -->
+          <div class="col-12" v-for="session in sessions" :key="session.id" v-show="hasSessions">
+            <div class="row align-items-center border-top pt-3 my-0">
+              <div class="col-10">
+                <b class="text-wrap text-block">{{ session.title }}</b>
+                <small class="text-wrap text-block text-muted">{{ session.note }}</small>
+              </div>
+
+              <!-- Actions -->
+              <div class="col-2">
+                <div class="d-grid gap-2">
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-success" @click="openSession(session)">Iniciar</button>
+
+                    <div class="btn-group" role="group">
+                      <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <button type="button" class="dropdown-item" @click="editSession(session)"><i class="bi bi-pencil-square"></i> Editar</button>
+                        </li>
+                        <li>
+                          <button type="button" class="dropdown-item text-danger" @click="removeSession(session)"><i class="bi bi-trash"></i> Excluir</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End actions -->
+            </div>
+          </div>
+          <!-- End sessions list -->
+        </div>
+      </div>
     </div>
 
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
     <script src="../js/vue.js"></script>
     <script src="../js/main.js"></script>
   </body>
