@@ -10,18 +10,8 @@ let currentSessions = []
 //Importando configurações
 const settings = require('./src/settings')
 
-//Caminho para o executável do Chrome
-const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-
-//Argumentos para o navegador
-const args = [
-  '--disable-save-password-bubble',
-  '--disable-autofill',
-  '--start-maximized',
-  '--disable-plugins-discovery',
-  '--disable-sync',
-  //
-]
+//Gerando o id baseado da sessão
+const generateSessionId = () => `session_${Date.now()}`
 
 //Obtendo sessões salvas
 const getSavedSessions = async () => {
@@ -40,11 +30,6 @@ const getSavedSessions = async () => {
       }
     })
   }
-}
-
-//Gerando o id baseado da sessão
-const generateSessionId = () => {
-  return `session_${Date.now()}`
 }
 
 //Removendo diretórios antigos
@@ -68,13 +53,13 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      //devTools: false,
+      devTools: settings.useDevTools,
     },
   })
 
-  //  browser.setMenu(null)
-  browser.maximize()
-  // browser.webContents.openDevTools()
+  browser.setMenu(null)
+  if (settings.useFullScreen) browser.maximize()
+  if (settings.useDevTools) browser.webContents.openDevTools()
 
   browser.loadFile('public/html/index.html')
 }
@@ -148,9 +133,9 @@ ipcMain.on('open-session', async (event, payload) => {
 
   let sessionDir = composeDirById(sessionToOpen.id)
 
-  let composeArgs = [`--user-data-dir=${sessionDir}`, ...args, sessionToOpen.home || 'https://google.com']
+  let composeArgs = [`--user-data-dir=${sessionDir}`, ...settings.initializeArgs, sessionToOpen.home || settings.defaultUrl]
 
-  execFile(chromePath, composeArgs, (error, stdout, stderr) => {
+  execFile(settings.chromePath, composeArgs, (error, stdout, stderr) => {
     if (error) console.error('Erro ao executar o Chrome:', error)
   })
 })

@@ -1,0 +1,13 @@
+appId: com.example.app
+productName: Multi Session
+
+directories:
+  output: './build'
+
+win:
+  icon: "./public/icons/icon_256.png"
+  target:
+    - target: nsis
+      arch:
+        - ia32
+        - x64
