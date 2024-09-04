@@ -4,7 +4,7 @@ const path = require('path')
 const settings = require('./../settings')
 
 //Path do usuário
-const appDataPath = process.env.LOCALAPPDATA
+const appDataPath = settings.customSessionDir || process.env.LOCALAPPDATA
 
 //Nome base da aplicação para diretórios
 const baseApplicationName = settings.title

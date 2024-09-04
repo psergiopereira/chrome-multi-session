@@ -11,6 +11,9 @@ module.exports = {
   //Se deseja abrir o devTools ao iniciar o navegador
   useDevTools: false,
 
+  //Usando um diretório diferente do padrão para armazenar as sessões
+  customSessionDir: null, //Example ('D:\\sessions\\')
+
   //Url padrão a ser executada ao abrir o navegador (quando não informada pelo usuário)
   defaultUrl: 'https://google.com/',
 
